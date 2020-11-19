@@ -3,15 +3,17 @@
     <ChatWindow
       :chatChannelInstance="chatChannelInstance"
       :myClientId="myClientId"
+      :chatMsgsArray="chatMsgsArray"
     ></ChatWindow>
-    <BackgroundInfo></BackgroundInfo>
+    <BackgroundInfo :chatMsgsArray="chatMsgsArray"></BackgroundInfo>
   </div>
 </template>
 
 <script>
-import ChatWindow from "./components/ChatWindow.vue";
-import BackgroundInfo from "./components/BackgroundInfo.vue";
+import ChatWindow from "./components/chatbox/ChatWindow.vue";
+import BackgroundInfo from "./components/infobox/BackgroundInfo.vue";
 import * as Ably from "ably";
+
 export default {
   name: "App",
   components: {
@@ -20,6 +22,7 @@ export default {
   },
   data() {
     return {
+      chatMsgsArray: [],
       ablyRealtimeInstance: null,
       isAblyConnected: false,
       chatChannelId: "[?rewind=2m]chat-airtable",
@@ -27,6 +30,7 @@ export default {
       myClientId: "",
     };
   },
+  methods: {},
   created() {
     const uniqueId =
       "id-" +
