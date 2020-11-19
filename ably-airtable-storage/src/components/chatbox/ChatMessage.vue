@@ -7,7 +7,7 @@
     }"
   >
     <div
-      class="card text-white chat-message "
+      class="card chat-message"
       :class="{
         'msg-bg-right': isMsgMine,
         'msg-bg-left': !isMsgMine,
@@ -19,7 +19,13 @@
         <p class="card-text message-text">
           {{ message.messageContent["chat-message"] }}
         </p>
-        <p class="card-text meta-text">
+        <p
+          class="card-text"
+          :class="{
+            'meta-text-left': !isMsgMine,
+            'meta-text-right': isMsgMine,
+          }"
+        >
           <small class=""
             >at {{ messageTime12HrFormat }} by
             {{ message.messageContent.username }}</small
@@ -90,7 +96,7 @@ export default {
   margin: 10px 0px;
 }
 .msg-bg-left {
-  background-color: #e40000;
+  background-color: #ffffff;
 }
 .msg-bg-right {
   background-color: #292831;
@@ -98,10 +104,12 @@ export default {
 
 .msg-left {
   justify-content: flex-start;
+  color: #292831;
 }
 
 .msg-right {
   justify-content: flex-end;
+  color: #ffffff;
 }
 
 .chat-message {
@@ -116,13 +124,17 @@ export default {
 .card-rounded-right-only {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
-  border: none;
+  border-top: 1px solid #292831;
+  border-right: 1px solid #292831;
+  border-bottom: 1px solid #292831;
 }
 
 .card-rounded-left-only {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
-  border: none;
+  border-top: 1px solid #ffffff;
+  border-left: 1px solid #ffffff;
+  border-bottom: 1px solid #ffffff;
 }
 
 .message-text {
@@ -130,8 +142,13 @@ export default {
   margin: 0px;
 }
 
-.meta-text {
+.meta-text-left {
   text-align: right;
-  color: #e9e9e9;
+  color: #76767c;
+}
+
+.meta-text-right {
+  text-align: right;
+  color: #9a9aa0;
 }
 </style>

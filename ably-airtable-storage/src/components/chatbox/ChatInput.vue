@@ -26,7 +26,7 @@
 import { backgroundEventBus } from "../../main.js";
 
 export default {
-  name: "BackgroundInfo",
+  name: "InfoCard",
   props: ["chatChannelInstance", "clientUsername", "myClientId"],
   data() {
     return {
@@ -67,16 +67,11 @@ export default {
 </script>
 <style scoped>
 .input-div {
-  border-left: 2px solid;
-  border-right: 2px solid;
-  border-bottom: 2px solid;
-  border-image-source: linear-gradient(
-    90deg,
-    rgba(228, 0, 0, 1) 25%,
-    rgba(255, 84, 22, 1) 90%
-  );
-  border-image-slice: 1;
-  border-radius: 5px;
+  border: 1px solid #292831;
+  border-top-right-radius: 0px;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
   height: 40px;
 }
 
@@ -86,21 +81,20 @@ export default {
 }
 
 .send-btn {
-  border-left: 2px solid;
-  border-image-source: linear-gradient(
-    90deg,
-    rgba(228, 0, 0, 1) 25%,
-    rgba(255, 84, 22, 1) 90%
-  );
-  border-image-slice: 1;
+  border-left: 0px;
   border-right: 0px;
   border-top: 0px;
   border-bottom: 0px;
+  border-radius: 0px;
+  background-color: #292831;
+  color: #f5f5f6;
+  border-left: 1px solid black;
 }
 
 .send-btn:hover {
-  background-color: #292831;
-  color: #f5f5f6;
+  background-color: #f5f5f6;
+  color: #292831;
+  border-left: 1px solid black;
 }
 
 .send-btn:active {

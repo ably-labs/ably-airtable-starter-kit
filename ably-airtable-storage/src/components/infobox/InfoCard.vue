@@ -2,14 +2,15 @@
   <div class="background-info-container">
     <div class="card background-info-card">
       <div class="background-info-header text-white card-header">
-        Play-by-play of behind the scenes as you use the chat app
+        Play-by-play of behind the scenes
       </div>
       <div class="background-info-body card-body text-dark">
-        <CurrentStatus
+        <CurrentStatusText
           :backgroundInfoText="backgroundInfoText"
           :infoLinkText="infoLinkText"
           :infoLinkHref="infoLinkHref"
-        ></CurrentStatus>
+          :showSecondLink="showSecondLink"
+        ></CurrentStatusText>
         <CodeSnippet
           v-if="showCodeSnippet"
           :whichCodeSnippet="whichCodeSnippet"
@@ -21,12 +22,12 @@
 
 <script>
 import CodeSnippet from "./CodeSnippet.vue";
-import CurrentStatus from "./CurrentStatus.vue";
+import CurrentStatusText from "./CurrentStatusText.vue";
 import { backgroundEventBus } from "../../main.js";
 
 export default {
-  name: "BackgroundInfo",
-  components: { CodeSnippet, CurrentStatus },
+  name: "InfoCard",
+  components: { CodeSnippet, CurrentStatusText },
   props: ["chatMsgsArray"],
   data() {
     return {
@@ -34,6 +35,7 @@ export default {
       backgroundInfoText: "",
       infoLinkText: "",
       infoLinkHref: "",
+      showSecondLink: false,
       backgroundStatusList: {
         JOIN_CHAT: "join-chat",
         PUBLISH_MSG: "publish-msg",
@@ -53,19 +55,19 @@ export default {
     this.whichCodeSnippet = "ably-connected";
     this.showCodeSnippet = true;
     backgroundEventBus.$on("updateBackgroundEventStatus", (data) => {
-      console.log(data);
       switch (data) {
         case this.backgroundStatusList.JOIN_CHAT:
           this.backgroundInfoText =
             "Joined the chat by entering the presence set. ";
           if (this.chatMsgsArray.length > 0) {
             this.backgroundInfoText +=
-              "Received " + this.chatMsgsArray.length + "rewound messages";
+              "Received " + this.chatMsgsArray.length + " rewound messages";
           }
           this.whichCodeSnippet = "ably-presence";
           this.infoLinkText = "Learn more about the 'Ably Presence' feature";
           this.infoLinkHref =
             "https://www.ably.io/documentation/realtime/presence";
+          this.showSecondLink = false;
           break;
         case this.backgroundStatusList.PUBLISH_MSG:
           this.backgroundInfoText =
@@ -73,6 +75,7 @@ export default {
           this.whichCodeSnippet = "ably-pubsub";
           this.infoLinkText = "Learn more about the 'Ably Pub/Sub' feature";
           this.infoLinkHref = "https://www.ably.io/pub-sub-messaging";
+          this.showSecondLink = false;
           break;
         case this.backgroundStatusList.LIVE_MSGS_LOADED:
           this.backgroundInfoText =
@@ -80,13 +83,15 @@ export default {
           this.whichCodeSnippet = "ably-sub-only";
           this.infoLinkText = "Learn more about the 'Ably Pub/Sub' feature";
           this.infoLinkHref = "https://www.ably.io/pub-sub-messaging";
+          this.showSecondLink = false;
           break;
         case this.backgroundStatusList.DB_MSGS_LOADED:
           this.backgroundInfoText =
-            "Received 3 old messages from the AirTable database";
+            "Received 3 old messages from the Airtable database";
           this.whichCodeSnippet = "airtable-db";
           this.infoLinkText = "Check out the Airtable REST API";
           this.infoLinkHref = "https://airtable.com/api";
+          this.showSecondLink = true;
           break;
       }
     });
@@ -101,8 +106,8 @@ export default {
 }
 .background-info-card {
   border: 1px solid #f5f5f6;
-  min-height: 700px;
-  max-height: 700px;
+  min-height: 90vh;
+  max-height: 90vh;
 }
 
 .background-info-header {

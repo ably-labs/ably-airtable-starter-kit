@@ -11,6 +11,7 @@
     "ably": "^1.2.4",
     "airtable": "^0.10.1",
     "core-js": "^3.6.5",
+    "dotenv": "^8.2.0",
     "vue": "^2.6.11",
     "vue-code-highlight": "^0.7.6"
   },

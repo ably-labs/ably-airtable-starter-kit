@@ -2,13 +2,19 @@
   <div class="chat-window-container">
     <div class="card chat-card">
       <div class="card-header chat-header">
-        Group Chat Demo - Ably | Airtable
+        <div class="header-data">
+          Group Chat Demo - Ably | Airtable
+        </div>
+        <!-- <div class="header-data presence-stats">
+          <p class="online-circle"></p>
+          2 people online
+        </div> -->
       </div>
       <div class="card-body chat-box " ref="chatMsgsBox">
-        <Username
+        <UsernameInput
           v-if="!isReadyToChat"
           :saveUsernameAndJoin="saveUsernameAndJoin"
-        ></Username>
+        ></UsernameInput>
         <template v-if="isReadyToChat">
           <div v-if="showLoadMoreBtn" class="load-more-div">
             <button
@@ -28,12 +34,12 @@
         </template>
       </div>
       <div class="card-footer input-footer">
-        <ChatInputBox
+        <ChatInput
           v-if="isReadyToChat"
           :chatChannelInstance="chatChannelInstance"
           :clientUsername="clientUsername"
           :myClientId="myClientId"
-        ></ChatInputBox>
+        ></ChatInput>
       </div>
     </div>
   </div>
@@ -41,13 +47,14 @@
 
 <script>
 import ChatMessage from "./ChatMessage.vue";
-import ChatInputBox from "./ChatInputBox.vue";
-import Username from "./Username.vue";
+import ChatInput from "./ChatInput.vue";
+import UsernameInput from "./UsernameInput.vue";
 import * as Airtable from "airtable";
 import { backgroundEventBus } from "../../main.js";
+import * as configVars from "../../../config.js";
 
 export default {
-  name: "ChatWindow",
+  name: "ChatCard",
   props: [
     "chatChannelInstance",
     "myClientId",
@@ -56,8 +63,8 @@ export default {
   ],
   components: {
     ChatMessage,
-    ChatInputBox,
-    Username,
+    ChatInput,
+    UsernameInput,
   },
   data() {
     return {
@@ -90,7 +97,6 @@ export default {
         let divScrollHeight = this.$refs.chatMsgsBox.scrollHeight;
         this.$refs.chatMsgsBox.scrollTop = divScrollHeight;
       }
-      console.log(messageContent.clientId);
       if (messageContent.clientId != this.myClientId) {
         backgroundEventBus.$emit(
           "updateBackgroundEventStatus",
@@ -104,7 +110,6 @@ export default {
       } else {
         this.getLatestMsgsFromDB();
       }
-      backgroundEventBus.$emit("updateBackgroundEventStatus", "db-msgs-loaded");
     },
     getMsgsFromDBWithMsgID() {
       this.latestMsgId = this.chatMsgsArray[0].messageContent.msgId;
@@ -112,7 +117,9 @@ export default {
       setTimeout(() => {
         this.showLoadMoreBtn = true;
       }, 2000);
-      this.base = new Airtable({ apiKey: "" }).base("");
+      this.base = new Airtable({
+        apiKey: configVars.AIRTABLE_API_KEY,
+      }).base(configVars.AIRTABLE_BASE_ID);
       let vueContext = this;
 
       this.base("Table 1")
@@ -154,6 +161,10 @@ export default {
                 msgTimestamp: 123,
                 msgType: "db",
               });
+              backgroundEventBus.$emit(
+                "updateBackgroundEventStatus",
+                "db-msgs-loaded"
+              );
               if (vueContext.$refs.chatMsgsBox) {
                 vueContext.$refs.chatMsgsBox.scrollTop = 0;
               }
@@ -169,7 +180,9 @@ export default {
         );
     },
     getLatestMsgsFromDB() {
-      this.base = new Airtable({ apiKey: "" }).base("");
+      this.base = new Airtable({
+        apiKey: configVars.AIRTABLE_API_KEY,
+      }).base(configVars.AIRTABLE_BASE_ID);
       let vueContext = this;
       this.base("Table 1")
         .select({
@@ -185,6 +198,10 @@ export default {
                 msgTimestamp: 123,
                 msgType: "db",
               });
+              backgroundEventBus.$emit(
+                "updateBackgroundEventStatus",
+                "db-msgs-loaded"
+              );
               if (vueContext.$refs.chatMsgsBox) {
                 vueContext.$refs.chatMsgsBox.scrollTop = 0;
               }
@@ -217,35 +234,41 @@ export default {
 }
 
 .chat-card {
-  min-height: 700px;
-  max-height: 700px;
+  min-height: 90vh;
+  max-height: 90vh;
 }
 .chat-header {
   border: none;
-  background: linear-gradient(
-    90deg,
-    rgba(228, 0, 0, 1) 25%,
-    rgba(255, 84, 22, 1) 90%
-  );
+  background-color: #292831;
   color: white;
   position: relative;
   font-size: 20px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.header-data {
+  margin: 0px;
 }
 
 .chat-box {
   padding: 0px;
   overflow-y: scroll;
-  background-image: url(../../assets/dot-grid.png);
+  background-image: url(../../assets/psychedelic_pattern.png);
   background-repeat: repeat;
-  border: 2px solid;
-  border-image-source: linear-gradient(
-    90deg,
-    rgba(228, 0, 0, 1) 25%,
-    rgba(255, 84, 22, 1) 90%
-  );
-  border-image-slice: 1;
+  border: none;
 }
 
+.presence-stats {
+  display: flex;
+}
+.online-circle {
+  background: #03940a;
+  border-radius: 50%;
+  width: 0.8rem;
+  height: 0.8rem;
+  margin: auto 0.5rem;
+}
 .input-footer {
   padding: 0px;
   border: none;

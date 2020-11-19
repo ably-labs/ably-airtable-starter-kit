@@ -1,24 +1,25 @@
 <template>
   <div id="app" class="app-container" v-if="this.isAblyConnected">
-    <ChatWindow
+    <ChatCard
       :chatChannelInstance="chatChannelInstance"
       :myClientId="myClientId"
       :chatMsgsArray="chatMsgsArray"
-    ></ChatWindow>
-    <BackgroundInfo :chatMsgsArray="chatMsgsArray"></BackgroundInfo>
+    ></ChatCard>
+    <InfoCard :chatMsgsArray="chatMsgsArray"></InfoCard>
   </div>
 </template>
 
 <script>
-import ChatWindow from "./components/chatbox/ChatWindow.vue";
-import BackgroundInfo from "./components/infobox/BackgroundInfo.vue";
+import ChatCard from "./components/chatbox/ChatCard.vue";
+import InfoCard from "./components/infobox/InfoCard.vue";
 import * as Ably from "ably";
+import * as configVars from "../config.js";
 
 export default {
   name: "App",
   components: {
-    ChatWindow,
-    BackgroundInfo,
+    ChatCard,
+    InfoCard,
   },
   data() {
     return {
@@ -39,7 +40,7 @@ export default {
         .substr(2, 16);
 
     this.ablyRealtimeInstance = new Ably.Realtime({
-      key: "",
+      key: configVars.ABLY_API_KEY,
       clientId: uniqueId,
     });
     this.myClientId = uniqueId;
@@ -63,7 +64,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 30px;
 }
 
 .app-container {

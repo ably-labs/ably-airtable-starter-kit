@@ -1,16 +1,17 @@
 <template>
   <div class="code-sample-container">
-    <VueCodeHighlight language="javascript" class="code-sample">
-      {{ jscode }}
-    </VueCodeHighlight>
+    <span>
+      <VueCodeHighlight language="javascript" class="code-sample">
+        {{ jscode }}
+      </VueCodeHighlight>
+    </span>
   </div>
 </template>
 
 <script>
 import { component as VueCodeHighlight } from "vue-code-highlight";
-import "vue-code-highlight/themes/duotone-sea.css";
-// import "vue-code-highlight/themes/prism.css";
-import "vue-code-highlight/themes/duotone-sea.css";
+import "vue-code-highlight/themes/prism-tomorrow.css";
+//import "vue-code-highlight/themes/prism-tomorrow.css";
 export default {
   name: "CodeSnippet",
   components: { VueCodeHighlight },
@@ -49,8 +50,8 @@ export default {
   created() {
     this.ablyConnectionCodeSnippet = `
     ablyRealtimeInstance = new Ably.Realtime({
-      key: ablyAPIKey,
-      clientId: uniqueId,
+      key: 'ablyAPIKey',
+      clientId: 'uniqueId',
     });
     ablyRealtimeInstance.connection.on("connected", () => {
       chatChannelInstance = ablyRealtimeInstance.channels.get(
@@ -79,8 +80,8 @@ export default {
     });
     `;
     this.airTableCodeSnippet = `
-      base = new Airtable({ apiKey: apiKey }).base(baseId);
-      base("Table 1").select({
+      airtableDBbase = new Airtable({ apiKey: 'apiKey' }).base('baseId');
+      airtableDBbase("Table 1").select({
           maxRecords: 3,
           view: "Grid view",
           sort: [{ field: "ID", direction: "desc" }],
@@ -115,7 +116,6 @@ export default {
 
 <style>
 .code-sample-container {
-  margin: 20px 0px;
   border: 1px #ffffff solid;
 }
 .code-sample {
