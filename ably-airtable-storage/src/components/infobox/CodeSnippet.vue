@@ -95,10 +95,6 @@ export default {
             });
           });
           fetchNextPage();
-        },
-        function done(err) {
-          console.error(err);
-          return;
         }
       );
     `;
