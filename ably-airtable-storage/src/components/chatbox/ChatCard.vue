@@ -97,7 +97,7 @@ export default {
         let divScrollHeight = this.$refs.chatMsgsBox.scrollHeight;
         this.$refs.chatMsgsBox.scrollTop = divScrollHeight;
       }
-      if (messageContent.clientId != this.myClientId) {
+      if (messageContent.clientId != this.myClientId && this.isReadyToChat) {
         backgroundEventBus.$emit(
           "updateBackgroundEventStatus",
           "live-msgs-loaded"
@@ -127,22 +127,15 @@ export default {
           view: "Grid view",
           filterByFormula: "SEARCH('" + vueContext.latestMsgId + "',{msgId})",
         })
-        .eachPage(
-          function page(records, fetchNextPage) {
-            records.forEach(function(record) {
-              vueContext.dbAutoNumber = record.get("ID");
-              vueContext.getMsgsFromDBWithAutoID();
-              return;
-            });
-            fetchNextPage(vueContext.dbAutoNumber);
-          },
-          function done(err) {
-            if (err) {
-              console.error(err);
-              return;
-            }
+        .eachPage(function page(records, fetchNextPage) {
+          const latestRecordID = records[0].fields.ID;
+          vueContext.dbAutoNumber = latestRecordID;
+          if (latestRecordID) {
+            vueContext.getMsgsFromDBWithAutoID();
+          } else {
+            fetchNextPage();
           }
-        );
+        });
     },
     getMsgsFromDBWithAutoID() {
       let vueContext = this;

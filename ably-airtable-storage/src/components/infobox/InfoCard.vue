@@ -48,7 +48,7 @@ export default {
   },
   created() {
     this.backgroundInfoText =
-      "Successfully connected to Ably Realtime, attached to the 'chat-airtable' channel with the rewind parameter set to 2min and added a subscription listener on that channel";
+      "Successfully connected to Ably Realtime, attached to the 'chat-airtable' channel with the rewind parameter set to 2min.";
     this.infoLinkText = "Learn more about the 'Ably Rewind' channel param";
     this.infoLinkHref =
       "https://www.ably.io/documentation/realtime/channels/channel-parameters/rewind";
@@ -58,10 +58,10 @@ export default {
       switch (data) {
         case this.backgroundStatusList.JOIN_CHAT:
           this.backgroundInfoText =
-            "Joined the chat by entering the presence set. ";
+            "Added a subscription listener on the chat channel and joined the chat by entering the presence set.";
           if (this.chatMsgsArray.length > 0) {
             this.backgroundInfoText +=
-              "Received " + this.chatMsgsArray.length + " rewound messages";
+              " Received " + this.chatMsgsArray.length + " rewound message(s).";
           }
           this.whichCodeSnippet = "ably-presence";
           this.infoLinkText = "Learn more about the 'Ably Presence' feature";
@@ -71,7 +71,7 @@ export default {
           break;
         case this.backgroundStatusList.PUBLISH_MSG:
           this.backgroundInfoText =
-            "Published a message and received it as a live subscription update";
+            "Published a message and received it as a live subscription update.";
           this.whichCodeSnippet = "ably-pubsub";
           this.infoLinkText = "Learn more about the 'Ably Pub/Sub' feature";
           this.infoLinkHref = "https://www.ably.io/pub-sub-messaging";
@@ -79,7 +79,7 @@ export default {
           break;
         case this.backgroundStatusList.LIVE_MSGS_LOADED:
           this.backgroundInfoText =
-            "Received a new message as a live subscription update";
+            "Received a new message as a live subscription update.";
           this.whichCodeSnippet = "ably-sub-only";
           this.infoLinkText = "Learn more about the 'Ably Pub/Sub' feature";
           this.infoLinkHref = "https://www.ably.io/pub-sub-messaging";
@@ -87,7 +87,7 @@ export default {
           break;
         case this.backgroundStatusList.DB_MSGS_LOADED:
           this.backgroundInfoText =
-            "Received 3 old messages from the Airtable database";
+            "Received 3 old messages from the Airtable database.";
           this.whichCodeSnippet = "airtable-db";
           this.infoLinkText = "Check out the Airtable REST API";
           this.infoLinkHref = "https://airtable.com/api";

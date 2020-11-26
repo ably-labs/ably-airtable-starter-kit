@@ -67,11 +67,11 @@ export default {
     },
     computeDbMsgTime() {
       const dbDateTimeUTC = this.message.messageContent["created-time"];
-      let year = dbDateTimeUTC.substr(0, 4);
-      let month = dbDateTimeUTC.substr(5, 2);
-      let day = dbDateTimeUTC.substr(8, 2);
-      let time = dbDateTimeUTC.substr(11, 8);
-      let localDateTime = new Date(`${year}/${month}/${day} ${time} UTC`);
+      const timedate = dbDateTimeUTC.split(/[- \sT:.]/);
+      const [year, month, day, hours, minutes, seconds] = timedate;
+      let localDateTime = new Date(
+        `${year}/${month}/${day} ${hours}:${minutes}:${seconds} UTC`
+      );
       this.convertTo12HrFormat(
         localDateTime.getHours(),
         localDateTime.getMinutes()

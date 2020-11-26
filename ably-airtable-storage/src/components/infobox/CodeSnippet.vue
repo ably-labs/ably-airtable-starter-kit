@@ -11,7 +11,6 @@
 <script>
 import { component as VueCodeHighlight } from "vue-code-highlight";
 import "vue-code-highlight/themes/prism-tomorrow.css";
-//import "vue-code-highlight/themes/prism-tomorrow.css";
 export default {
   name: "CodeSnippet",
   components: { VueCodeHighlight },
@@ -58,11 +57,11 @@ export default {
         '[?rewind=2m]chat-airtable'
       );
     });
+    `;
+    this.ablyPresenceCodeSnippet = `
     chatChannelInstance.subscribe((msg) => {
       handleNewMessage(msg);
     });
-    `;
-    this.ablyPresenceCodeSnippet = `
     chatChannelInstance.presence.enter(username);
     `;
     this.ablyPubSubCodeSnippet = `

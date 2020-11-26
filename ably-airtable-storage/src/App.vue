@@ -44,7 +44,7 @@ export default {
       clientId: uniqueId,
     });
     this.myClientId = uniqueId;
-    this.ablyRealtimeInstance.connection.on("connected", () => {
+    this.ablyRealtimeInstance.connection.once("connected", () => {
       this.isAblyConnected = true;
       this.chatChannelInstance = this.ablyRealtimeInstance.channels.get(
         this.chatChannelId
