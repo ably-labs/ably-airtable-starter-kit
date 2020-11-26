@@ -1,25 +1,29 @@
 <template>
   <div id="app" class="app-container" v-if="this.isAblyConnected">
-    <ChatWindow
+    <ChatCard
       :chatChannelInstance="chatChannelInstance"
       :myClientId="myClientId"
-    ></ChatWindow>
-    <BackgroundInfo></BackgroundInfo>
+      :chatMsgsArray="chatMsgsArray"
+    ></ChatCard>
+    <InfoCard :chatMsgsArray="chatMsgsArray"></InfoCard>
   </div>
 </template>
 
 <script>
-import ChatWindow from "./components/ChatWindow.vue";
-import BackgroundInfo from "./components/BackgroundInfo.vue";
+import ChatCard from "./components/chatbox/ChatCard.vue";
+import InfoCard from "./components/infobox/InfoCard.vue";
 import * as Ably from "ably";
+import * as configVars from "../config.js";
+
 export default {
   name: "App",
   components: {
-    ChatWindow,
-    BackgroundInfo,
+    ChatCard,
+    InfoCard,
   },
   data() {
     return {
+      chatMsgsArray: [],
       ablyRealtimeInstance: null,
       isAblyConnected: false,
       chatChannelId: "[?rewind=2m]chat-airtable",
@@ -27,6 +31,7 @@ export default {
       myClientId: "",
     };
   },
+  methods: {},
   created() {
     const uniqueId =
       "id-" +
@@ -35,11 +40,11 @@ export default {
         .substr(2, 16);
 
     this.ablyRealtimeInstance = new Ably.Realtime({
-      key: "",
+      key: configVars.ABLY_API_KEY,
       clientId: uniqueId,
     });
     this.myClientId = uniqueId;
-    this.ablyRealtimeInstance.connection.on("connected", () => {
+    this.ablyRealtimeInstance.connection.once("connected", () => {
       this.isAblyConnected = true;
       this.chatChannelInstance = this.ablyRealtimeInstance.channels.get(
         this.chatChannelId
@@ -59,7 +64,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 30px;
 }
 
 .app-container {
