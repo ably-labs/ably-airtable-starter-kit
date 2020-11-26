@@ -13,7 +13,6 @@
 import ChatCard from "./components/chatbox/ChatCard.vue";
 import InfoCard from "./components/infobox/InfoCard.vue";
 import * as Ably from "ably";
-import * as configVars from "../config.js";
 
 export default {
   name: "App",
@@ -33,18 +32,11 @@ export default {
   },
   methods: {},
   created() {
-    const uniqueId =
-      "id-" +
-      Math.random()
-        .toString(36)
-        .substr(2, 16);
-
     this.ablyRealtimeInstance = new Ably.Realtime({
-      key: configVars.ABLY_API_KEY,
-      clientId: uniqueId,
+      authUrl: "/auth",
     });
-    this.myClientId = uniqueId;
     this.ablyRealtimeInstance.connection.once("connected", () => {
+      this.myClientId = this.ablyRealtimeInstance.auth.clientId;
       this.isAblyConnected = true;
       this.chatChannelInstance = this.ablyRealtimeInstance.channels.get(
         this.chatChannelId

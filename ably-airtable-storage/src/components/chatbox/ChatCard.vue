@@ -116,7 +116,7 @@ export default {
       this.showLoadMoreBtn = false;
       setTimeout(() => {
         this.showLoadMoreBtn = true;
-      }, 2000);
+      }, 500);
       this.base = new Airtable({
         apiKey: configVars.AIRTABLE_API_KEY,
       }).base(configVars.AIRTABLE_BASE_ID);
