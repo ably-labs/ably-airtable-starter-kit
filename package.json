@@ -1,0 +1,25 @@
+{
+  "name": "ably-airtable-starter-kit",
+  "version": "1.0.0",
+  "description": "Demo app to use Airtable as a database to store realtime messages from Ably",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Srushtika/ably-airtable-starter-kit.git"
+  },
+  "author": "Srushtika Neelakantam",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Srushtika/ably-airtable-starter-kit/issues"
+  },
+  "homepage": "https://github.com/Srushtika/ably-airtable-starter-kit#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "path": "^0.12.7",
+    "serve-static": "^1.14.1"
+  }
+}
