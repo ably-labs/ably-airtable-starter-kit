@@ -27,9 +27,15 @@
           }"
         >
           <small class=""
-            >at {{ messageTime12HrFormat }} by
-            {{ message.messageContent.username }}</small
-          >
+            >at {{ messageTime12HrFormat }}
+            <template v-if="!isMsgFromToday">
+              on {{ this.date }}/{{ this.month }}
+            </template>
+            <template v-if="isMsgFromToday">
+              today
+            </template>
+            by {{ message.messageContent.username }}
+          </small>
         </p>
       </div>
     </div>
@@ -41,19 +47,40 @@ export default {
   props: ["message", "myClientId"],
   data() {
     return {
+      weekdays: [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ],
       messageTime12HrFormat: null,
       isMsgMine: null,
       msgType: null,
       timeHours: null,
       timeMinutes: null,
       timeAMPM: null,
+      date: null,
+      month: null,
+      year: null,
+      weekday: null,
+      isMsgFromToday: false,
     };
   },
   methods: {
     computeLiveMsgTime() {
       const messageTime24HrFormat = new Date(this.message.msgTimestamp);
+
+      if ((this.isMsgFromToday = this.isToday(messageTime24HrFormat))) {
+        this.date = messageTime24HrFormat.getDate();
+        this.month = messageTime24HrFormat.getMonth() + 1;
+        this.year = messageTime24HrFormat.getFullYear();
+      }
       let hours = messageTime24HrFormat.getHours();
       let minutes = messageTime24HrFormat.getMinutes();
+
       this.convertTo12HrFormat(hours, minutes);
     },
     convertTo12HrFormat(hours, minutes) {
@@ -68,14 +95,29 @@ export default {
     computeDbMsgTime() {
       const dbDateTimeUTC = this.message.messageContent["created-time"];
       const timedate = dbDateTimeUTC.split(/[- \sT:.]/);
-      const [year, month, day, hours, minutes, seconds] = timedate;
+      const [msgyear, msgmonth, msgday, hours, minutes, seconds] = timedate;
       let localDateTime = new Date(
-        `${year}/${month}/${day} ${hours}:${minutes}:${seconds} UTC`
+        `${msgyear}/${msgmonth}/${msgday} ${hours}:${minutes}:${seconds} UTC`
       );
+      this.date = localDateTime.getDate();
+      this.month = localDateTime.getMonth() + 1;
+      this.year = localDateTime.getFullYear();
       this.convertTo12HrFormat(
         localDateTime.getHours(),
         localDateTime.getMinutes()
       );
+    },
+    isToday(msgDate) {
+      const today = new Date();
+      if (
+        today.getDate() == msgDate.getDate() &&
+        today.getMonth() == msgDate.getMonth() &&
+        today.getFullYear() == msgDate.getFullYear()
+      ) {
+        return true;
+      } else {
+        return false;
+      }
     },
   },
   created() {
@@ -101,7 +143,6 @@ export default {
 .msg-bg-right {
   background-color: #292831;
 }
-
 .msg-left {
   justify-content: flex-start;
   color: #292831;
