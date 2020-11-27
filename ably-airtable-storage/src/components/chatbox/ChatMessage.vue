@@ -73,7 +73,7 @@ export default {
     computeLiveMsgTime() {
       const messageTime24HrFormat = new Date(this.message.msgTimestamp);
 
-      if ((this.isMsgFromToday = this.isToday(messageTime24HrFormat))) {
+      if (!(this.isMsgFromToday = this.isToday(messageTime24HrFormat))) {
         this.date = messageTime24HrFormat.getDate();
         this.month = messageTime24HrFormat.getMonth() + 1;
         this.year = messageTime24HrFormat.getFullYear();
@@ -99,9 +99,12 @@ export default {
       let localDateTime = new Date(
         `${msgyear}/${msgmonth}/${msgday} ${hours}:${minutes}:${seconds} UTC`
       );
-      this.date = localDateTime.getDate();
-      this.month = localDateTime.getMonth() + 1;
-      this.year = localDateTime.getFullYear();
+
+      if (!(this.isMsgFromToday = this.isToday(localDateTime))) {
+        this.date = localDateTime.getDate();
+        this.month = localDateTime.getMonth() + 1;
+        this.year = localDateTime.getFullYear();
+      }
       this.convertTo12HrFormat(
         localDateTime.getHours(),
         localDateTime.getMinutes()
