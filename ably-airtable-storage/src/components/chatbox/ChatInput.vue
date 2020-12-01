@@ -24,6 +24,7 @@
 
 <script>
 import { backgroundEventBus } from "../../main.js";
+import axios from "axios";
 
 export default {
   name: "InfoCard",
@@ -33,11 +34,14 @@ export default {
       myMessageContent: "",
       msgPayload: null,
       myUsername: null,
+      profanityBaseURL: "https://www.purgomalum.com/service/plain?text=",
+      myFilteredMessage: "",
     };
   },
   methods: {
-    publishMessage() {
+    async publishMessage() {
       if (this.myMessageContent != "") {
+        await this.filterMessage();
         const uniqueMsgId =
           "id-" +
           Math.random()
@@ -50,7 +54,7 @@ export default {
               clientId: this.myClientId,
               msgId: uniqueMsgId,
               username: this.clientUsername,
-              "chat-message": this.myMessageContent,
+              "chat-message": this.myFilteredMessage,
             },
           },
         ];
@@ -61,6 +65,15 @@ export default {
         backgroundEventBus.$emit("updateBackgroundEventStatus", "publish-msg");
         this.myMessageContent = "";
       }
+    },
+    async filterMessage() {
+      const encodedMessage = encodeURIComponent(this.myMessageContent);
+      await axios
+        .get(this.profanityBaseURL + encodedMessage + "&fill_text=***")
+        .then((filteredMessage) => {
+          this.myFilteredMessage = filteredMessage.data;
+        });
+      return;
     },
   },
 };
