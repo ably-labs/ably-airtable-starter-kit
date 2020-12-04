@@ -8,10 +8,10 @@
       <template v-if="showSecondLink"
         >or
         <a
-          href="https://airtable.com/shrBExmY1lK3yyupo/tble6R4YjCEuP8A7x"
+          href="https://airtable.com/shrUIlfpL6mUmqtmy/tble6R4YjCEuP8A7x"
           target="_blank"
         >
-          see the database schema for this app
+          see the data stored for this app
         </a></template
       >
     </div>
