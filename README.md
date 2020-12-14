@@ -1,3 +1,6 @@
+This branch is a WIP implementing Hive AI powered profanity filter in the chat.
+
+
 ### A fully functional starter kit to store realtime messages from Ably into Airtable via WebHooks
 
 This project shows how to use [Airtable](https://airtable.com/) to store realtime messages using a group chat app built with [Ably Realtime](https://www.ably.io/). 
