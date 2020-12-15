@@ -41,26 +41,22 @@ export default {
   methods: {
     async publishMessage() {
       if (this.myMessageContent != "") {
-        await this.filterMessage();
+        //await this.filterMessage();
         const uniqueMsgId =
           "id-" +
           Math.random()
             .toString(36)
             .substr(2, 16);
 
-        this.msgPayload = [
-          {
-            fields: {
-              clientId: this.myClientId,
-              msgId: uniqueMsgId,
-              username: this.clientUsername,
-              "chat-message": this.myFilteredMessage,
-            },
-          },
-        ];
+        this.msgPayload = {
+          clientId: this.myClientId,
+          msgId: uniqueMsgId,
+          username: this.clientUsername,
+          messageContent: this.myMessageContent,
+        };
 
         this.chatChannelInstance.publish("chat-msg", {
-          records: this.msgPayload,
+          originalChatMessage: this.msgPayload,
         });
         backgroundEventBus.$emit("updateBackgroundEventStatus", "publish-msg");
         this.myMessageContent = "";

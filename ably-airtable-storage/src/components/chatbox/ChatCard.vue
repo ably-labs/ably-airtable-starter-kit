@@ -5,10 +5,6 @@
         <div class="header-data">
           Group Chat Demo - Ably | Airtable
         </div>
-        <!-- <div class="header-data presence-stats">
-          <p class="online-circle"></p>
-          2 people online
-        </div> -->
       </div>
       <div class="card-body chat-box " ref="chatMsgsBox">
         <UsernameInput
@@ -57,6 +53,7 @@ export default {
   name: "ChatCard",
   props: [
     "chatChannelInstance",
+    "incomingChatChannelInstance",
     "myClientId",
     "updateBackgroundStatus",
     "chatMsgsArray",
@@ -82,15 +79,13 @@ export default {
     saveUsernameAndJoin(username) {
       this.clientUsername = username;
       this.isReadyToChat = true;
-      this.chatChannelInstance.presence.enter(username);
       backgroundEventBus.$emit("updateBackgroundEventStatus", "join-chat");
     },
     async handleNewMessage(msg) {
+      console.log("CALLED");
       let messageContent = msg.data.records[0].fields;
-      let msgTimestamp = msg.timestamp;
       await this.chatMsgsArray.push({
         messageContent,
-        msgTimestamp,
         msgType: "live",
       });
       if (this.$refs.chatMsgsBox) {
@@ -122,7 +117,7 @@ export default {
       }).base(configVars.AIRTABLE_BASE_ID);
       let vueContext = this;
 
-      this.base("Table 1")
+      this.base("ChatLogs")
         .select({
           view: "Grid view",
           filterByFormula: "SEARCH('" + vueContext.latestMsgId + "',{msgId})",
@@ -139,7 +134,7 @@ export default {
     },
     getMsgsFromDBWithAutoID() {
       let vueContext = this;
-      this.base("Table 1")
+      this.base("ChatLogs")
         .select({
           maxRecords: 3,
           view: "Grid view",
@@ -151,7 +146,6 @@ export default {
             records.forEach(async function(record) {
               await vueContext.chatMsgsArray.unshift({
                 messageContent: record.fields,
-                msgTimestamp: 123,
                 msgType: "db",
               });
               backgroundEventBus.$emit(
@@ -177,7 +171,7 @@ export default {
         apiKey: configVars.AIRTABLE_API_KEY,
       }).base(configVars.AIRTABLE_BASE_ID);
       let vueContext = this;
-      this.base("Table 1")
+      this.base("ChatLogs")
         .select({
           maxRecords: 3,
           view: "Grid view",
@@ -188,7 +182,6 @@ export default {
             records.forEach(async function(record) {
               await vueContext.chatMsgsArray.unshift({
                 messageContent: record.fields,
-                msgTimestamp: 123,
                 msgType: "db",
               });
               backgroundEventBus.$emit(
@@ -212,7 +205,7 @@ export default {
   },
   created() {
     this.isReadyToChat = false;
-    this.chatChannelInstance.subscribe((msg) => {
+    this.incomingChatChannelInstance.subscribe((msg) => {
       this.handleNewMessage(msg);
     });
   },
