@@ -16,7 +16,7 @@ Any new messages posted to the chat go through a profanity filter, and get autom
 
 ## Live demo
 
-Check out this project in action at https://ably-airtable.herokuapp.com/
+Check out this project in action at https://realtime-chat-storage.ably.dev/
 
 ## How to run this project locally?
 
