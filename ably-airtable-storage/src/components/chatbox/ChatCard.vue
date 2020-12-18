@@ -3,7 +3,7 @@
     <div class="card chat-card">
       <div class="card-header chat-header">
         <div class="header-data">
-          Group Chat Demo - Ably | Airtable
+          Group Chat Demo | <a :href="articleLink" target="_blank">Learn more</a>
         </div>
         <!-- <div class="header-data presence-stats">
           <p class="online-circle"></p>
@@ -76,6 +76,7 @@ export default {
       base: null,
       latestMsgId: null,
       showLoadMoreBtn: true,
+      articleLink: "https://www.ably.io/blog/airtable-database-realtime-messages",
     };
   },
   methods: {
