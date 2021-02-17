@@ -2,6 +2,7 @@
   <div id="app" class="app-container" v-if="this.isAblyConnected">
     <ChatCard
       :chatChannelInstance="chatChannelInstance"
+      :incomingChatChannelInstance="incomingChatChannelInstance"
       :myClientId="myClientId"
       :chatMsgsArray="chatMsgsArray"
     ></ChatCard>
@@ -25,8 +26,10 @@ export default {
       chatMsgsArray: [],
       ablyRealtimeInstance: null,
       isAblyConnected: false,
-      chatChannelId: "[?rewind=2m]chat-airtable",
+      chatChannelId: "original-chat",
+      incomingChatChannelId: "[?rewind=2m]filtered-chat",
       chatChannelInstance: null,
+      incomingChatChannelInstance: null,
       myClientId: "",
     };
   },
@@ -40,6 +43,9 @@ export default {
       this.isAblyConnected = true;
       this.chatChannelInstance = this.ablyRealtimeInstance.channels.get(
         this.chatChannelId
+      );
+      this.incomingChatChannelInstance = this.ablyRealtimeInstance.channels.get(
+        this.incomingChatChannelId
       );
     });
   },

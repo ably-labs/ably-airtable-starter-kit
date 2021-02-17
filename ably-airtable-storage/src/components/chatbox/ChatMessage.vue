@@ -17,7 +17,7 @@
     >
       <div class="card-body">
         <p class="card-text message-text">
-          {{ message.messageContent["chat-message"] }}
+          {{ message.messageContent.filteredChatMessage }}
         </p>
         <p
           class="card-text"
@@ -71,7 +71,9 @@ export default {
   },
   methods: {
     computeLiveMsgTime() {
-      const messageTime24HrFormat = new Date(this.message.msgTimestamp);
+      const messageTime24HrFormat = new Date(
+        this.message.messageContent.timestamp
+      );
 
       if (!(this.isMsgFromToday = this.isToday(messageTime24HrFormat))) {
         this.date = messageTime24HrFormat.getDate();
@@ -93,7 +95,7 @@ export default {
       this.messageTime12HrFormat = `${hours}:${minutes} ${ampm}`;
     },
     computeDbMsgTime() {
-      const dbDateTimeUTC = this.message.messageContent["created-time"];
+      const dbDateTimeUTC = this.message.messageContent.createdTime;
       const timedate = dbDateTimeUTC.split(/[- \sT:.]/);
       const [msgyear, msgmonth, msgday, hours, minutes, seconds] = timedate;
       let localDateTime = new Date(
