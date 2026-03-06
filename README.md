@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> This project is no longer being maintained as of March 2026.
+
 ### A fully functional starter kit to store realtime messages from Ably into Airtable via WebHooks
 
 This project shows how to use [Airtable](https://airtable.com/) to store realtime messages using a group chat app built with [Ably Realtime](https://www.ably.io/). 
